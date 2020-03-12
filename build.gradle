@@ -1,0 +1,43 @@
+buildscript {
+  ext {
+    ver = [
+        java: "11",
+        lombok: "1.18.+",
+        guava: "28.2-jre",
+        vavr: "0.10.2",
+        mongodbDriver: "3.12.2",
+        junitJupiter: "5.4.2",
+    ]
+
+  }
+}
+
+plugins {
+  id 'java'
+}
+
+group = "io.agatsenko"
+sourceCompatibility = ver.java
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  annotationProcessor "org.projectlombok:lombok:${ver.lombok}"
+  compileOnly "org.projectlombok:lombok:${ver.lombok}"
+  testAnnotationProcessor "org.projectlombok:lombok:${ver.lombok}"
+  testCompileOnly "org.projectlombok:lombok:${ver.lombok}"
+
+  implementation "com.google.guava:guava:${ver.guava}"
+  implementation "io.vavr:vavr:${ver.vavr}"
+  implementation "org.mongodb:mongodb-driver-sync:${ver.mongodbDriver}"
+
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${ver.junitJupiter}"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${ver.junitJupiter}"
+}
+
+test {
+  useJUnitPlatform()
+}
+
