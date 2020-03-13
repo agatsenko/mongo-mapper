@@ -17,12 +17,17 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
+import com.agatsenko.mongo.mapper.EntityCodecProvider;
+
 public class Tester {
     public static void main(String[] args) {
         final var dbName = "test";
         final var codecRegistry = CodecRegistries.fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),
-                CodecRegistries.fromCodecs(new FooCodec())
+                CodecRegistries.fromProviders(EntityCodecProvider.builder()
+                        .register(FooMapper.entityMap)
+                        .build()
+                )
         );
         final var clientSettings = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString("mongodb://test:test@localhost/" + dbName))
@@ -33,7 +38,9 @@ public class Tester {
             final var coll = db.getCollection("Foo", Foo.class);
             coll.deleteMany(new Bson() {
                 @Override
-                public <TDocument> BsonDocument toBsonDocument(Class<TDocument> tDocumentClass, CodecRegistry codecRegistry) {
+                public <TDocument> BsonDocument toBsonDocument(
+                        Class<TDocument> tDocumentClass,
+                        CodecRegistry codecRegistry) {
                     return new BsonDocument();
                 }
             });

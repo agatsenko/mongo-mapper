@@ -1,9 +1,9 @@
-package com.agatsenko.mongo.mapper_.model;
+package com.agatsenko.mongo.mapper.model;
 
 import io.vavr.Function1;
 import lombok.Builder;
 
-public class FieldValueMap<TEntity, TField, TDocValue> extends FieldMap<TEntity, TField, TDocValue> {
+public final class FieldValueMap<TEntity, TField, TDocValue> extends FieldMap<TEntity, TField, TDocValue> {
     @Builder
     public FieldValueMap(
             String fieldName,

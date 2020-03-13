@@ -1,27 +1,21 @@
-/**
- * Author: Alexander Gatsenko (alexandr.gatsenko@gmail.com)
- * Created: 2020-03-12
- */
 package com.agatsenko.mongo.mapper.model;
 
-import java.util.Objects;
+import com.agatsenko.mongo.mapper.util.Check;
+
+import lombok.*;
+
 import java.util.Set;
 
-import com.agatsenko.mongo.mapper.util.Check;
-import com.google.common.base.Strings;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Singular;
-import lombok.Value;
-
-@Value
+@Getter
 @EqualsAndHashCode(of = "type")
+@ToString
 public final class EntityMap<TEntity> {
+    public static final String DEFAULT_DISCRIMINATOR_KEY = "_class";
+
     private final Class<TEntity> type;
     private final String docCollectionName;
 
     private final Set<FieldMap<TEntity, ?, ?>> fields;
-    private final FieldMap<TEntity, ?, ?> docIdFieldMap;
     private final boolean writeNulls;
 
     private final boolean discriminatorEnabled;
@@ -35,7 +29,6 @@ public final class EntityMap<TEntity> {
             Class<TEntity> type,
             String docCollectionName,
             @Singular Set<FieldMap<TEntity, ?, ?>> fields,
-            FieldMap<TEntity, ?, ?> docIdFieldMap,
             boolean writeNulls,
             boolean discriminatorEnabled,
             String discriminatorKey,
@@ -48,16 +41,15 @@ public final class EntityMap<TEntity> {
         this.type = type;
         this.docCollectionName = docCollectionName == null ? type.getSimpleName() : docCollectionName;
         this.fields = fields;
-        if (docIdFieldMap != null) {
-            Check.arg(fields.contains(docIdFieldMap), "fields should contain docIdFieldMap");
-            this.docIdFieldMap = docIdFieldMap;
-        } else {
-            this.docIdFieldMap = null;
-        }
         this.writeNulls = writeNulls;
         this.discriminatorEnabled = discriminatorEnabled;
-        this.discriminatorKey = discriminatorKey;
-        this.discriminator = discriminator;
+        if (discriminatorEnabled) {
+            this.discriminatorKey = discriminatorKey == null ? DEFAULT_DISCRIMINATOR_KEY : discriminatorKey;
+            this.discriminator = discriminator == null ? type.getName() : discriminator;
+        } else {
+            this.discriminatorKey = null;
+            this.discriminator = null;
+        }
         this.entityCreator = entityCreator;
     }
 }

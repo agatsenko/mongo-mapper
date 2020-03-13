@@ -1,6 +1,6 @@
-package com.agatsenko.mongo.mapper_.impl;
+package com.agatsenko.mongo.mapper.impl;
 
-import com.agatsenko.mongo.mapper_.model.EntityMap;
+import com.agatsenko.mongo.mapper.model.EntityMap;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 
 @RequiredArgsConstructor
 @Getter
-public class ReadContext<TEntity> {
+public final class ReadContext<TEntity> {
     @NonNull
     private final EntityMap<TEntity> entityMap;
     @NonNull

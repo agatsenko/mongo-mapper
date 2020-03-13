@@ -1,11 +1,11 @@
-package com.agatsenko.mongo.mapper_.impl;
+package com.agatsenko.mongo.mapper.impl;
 
 import com.agatsenko.mongo.mapper.util.Check;
-import com.agatsenko.mongo.mapper_.model.FieldMap;
-import com.agatsenko.mongo.mapper_.model.FieldValueMap;
+import com.agatsenko.mongo.mapper.model.FieldMap;
+import com.agatsenko.mongo.mapper.model.FieldValueMap;
 import org.bson.BsonReader;
 
-public class FieldValueReader<TEntity, TField, TDocValue> implements FieldReader<TEntity, TField, TDocValue> {
+public final class FieldValueReader<TEntity, TField, TDocValue> implements FieldReader<TEntity, TField, TDocValue> {
     private final FieldValueMap<TEntity, TField, TDocValue> fieldMap;
 
     public FieldValueReader(FieldValueMap<TEntity, TField, TDocValue> fieldMap) {

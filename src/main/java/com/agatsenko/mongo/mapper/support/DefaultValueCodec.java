@@ -4,8 +4,6 @@
  */
 package com.agatsenko.mongo.mapper.support;
 
-import com.agatsenko.mongo.mapper.model.FieldCodec;
-import com.agatsenko.mongo.mapper.util.Procedure3;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonWriter;
@@ -13,14 +11,16 @@ import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 import io.vavr.Function1;
 import io.vavr.Function2;
-import io.vavr.Function3;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import com.agatsenko.mongo.mapper.model.ValueCodec;
+import com.agatsenko.mongo.mapper.util.Procedure3;
+
 @Builder
 @RequiredArgsConstructor
-public class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, TDocValue> {
+public class DefaultValueCodec<TField, TDocValue> implements ValueCodec<TField, TDocValue> {
     @NonNull
     private final Class<TField> fieldType;
     @NonNull
@@ -33,7 +33,7 @@ public class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, 
     private final Procedure3<BsonWriter, TDocValue, EncoderContext> docValueWriter;
 
     @Override
-    public TField toField(TDocValue docValue) {
+    public TField toValue(TDocValue docValue) {
         return toFieldConverter.apply(docValue);
     }
 
@@ -47,7 +47,8 @@ public class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, 
         if (reader.getCurrentBsonType() == BsonType.NULL) {
             reader.readNull();
             return null;
-        } else {
+        }
+        else {
             return toFieldConverter.apply(docValueReader.apply(reader, decoderContext));
         }
     }
@@ -56,7 +57,8 @@ public class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, 
     public void encode(BsonWriter writer, TField value, EncoderContext encoderContext) {
         if (value == null) {
             writer.writeNull();
-        } else {
+        }
+        else {
             docValueWriter.apply(writer, toDocValueConverter.apply(value), encoderContext);
         }
     }

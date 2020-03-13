@@ -1,13 +1,14 @@
-package com.agatsenko.mongo.mapper_.impl;
+package com.agatsenko.mongo.mapper.impl;
 
-import com.agatsenko.mongo.mapper_.model.EntityFieldValues;
-import com.agatsenko.mongo.mapper_.model.EntityMap;
-import com.agatsenko.mongo.mapper_.model.FieldMap;
+import com.agatsenko.mongo.mapper.model.EntityFieldValues;
+import com.agatsenko.mongo.mapper.model.EntityMap;
+import com.agatsenko.mongo.mapper.model.FieldMap;
+import com.agatsenko.mongo.mapper.util.Check;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultEntityFieldValues<TEntity> implements EntityFieldValues<TEntity> {
+public final class DefaultEntityFieldValues<TEntity> implements EntityFieldValues<TEntity> {
     private final Map<FieldMap<TEntity, ?, ?>, Object> valueMap;
 
     public DefaultEntityFieldValues(EntityMap<TEntity> entityMap) {
@@ -16,8 +17,8 @@ public class DefaultEntityFieldValues<TEntity> implements EntityFieldValues<TEnt
 
     @Override
     public <T> T get(FieldMap<TEntity, T, ?> field) {
-        // FIXME: not implemented
-        throw new IllegalStateException("not yet implemented");
+        Check.argNotNull(field, "field");
+        return field.getFieldType().cast(valueMap.get(field));
     }
 
     public void putValue(FieldMap<TEntity, ?, ?> field, Object value) {
