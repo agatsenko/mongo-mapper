@@ -9,12 +9,13 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "fieldName", callSuper = false)
 @ToString(of = {"fieldName", "docKey", "fieldType"})
-public abstract class FieldMap<TEntity, TField, TDocValue> extends ValueMap<TField, TDocValue> {
+public abstract class FieldMap<TEntity, TField, TDocValue> {
     private final String fieldName;
     private final String docKey;
 
     private final Class<TField> fieldType;
     private final Function1<TEntity, TField> fieldExtractor;
+    private final ValueCodec<TField, TDocValue> codec;
 
     public FieldMap(
             String fieldName,
@@ -22,7 +23,7 @@ public abstract class FieldMap<TEntity, TField, TDocValue> extends ValueMap<TFie
             Class<TField> fieldType,
             Function1<TEntity, TField> fieldExtractor,
             ValueCodec<TField, TDocValue> codec) {
-        super(codec);
+        this.codec = codec;
 
         Check.argNotNullOrEmpty(fieldName, "fieldName");
         Check.argNotNull(fieldType, "fieldType");
@@ -32,5 +33,9 @@ public abstract class FieldMap<TEntity, TField, TDocValue> extends ValueMap<TFie
         this.docKey = docKey == null ? fieldName : docKey;
         this.fieldType = fieldType;
         this.fieldExtractor = fieldExtractor;
+    }
+
+    public ValueCodec<TField, TDocValue> getCodec() {
+        return this.codec;
     }
 }

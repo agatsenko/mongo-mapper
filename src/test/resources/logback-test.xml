@@ -3,7 +3,7 @@
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
-        <withJansi>true</withJansi>
+        <withJansi>false</withJansi>
     </appender>
 
     <root level="info">
