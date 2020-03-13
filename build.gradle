@@ -3,6 +3,8 @@ buildscript {
     ver = [
         java: "11",
         lombok: "1.18.+",
+        slf4j: "1.7.30",
+        logback: "1.2.3",
         guava: "28.2-jre",
         vavr: "0.10.2",
         mongodbDriver: "3.12.2",
@@ -29,6 +31,8 @@ dependencies {
   testAnnotationProcessor "org.projectlombok:lombok:${ver.lombok}"
   testCompileOnly "org.projectlombok:lombok:${ver.lombok}"
 
+  implementation "org.slf4j:slf4j-api:${ver.slf4j}"
+  implementation "ch.qos.logback:logback-classic:${ver.logback}"
   implementation "com.google.guava:guava:${ver.guava}"
   implementation "io.vavr:vavr:${ver.vavr}"
   implementation "org.mongodb:mongodb-driver-sync:${ver.mongodbDriver}"

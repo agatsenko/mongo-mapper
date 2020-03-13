@@ -2,9 +2,12 @@
  * Author: Alexander Gatsenko (alexandr.gatsenko@gmail.com)
  * Created: 2020-03-12
  */
-package com.agatsenko.mongo.mapper;
+package com.agatsenko.mongo.mapper.support;
 
+import com.agatsenko.mongo.mapper.model.FieldCodec;
+import com.agatsenko.mongo.mapper.util.Procedure3;
 import org.bson.BsonReader;
+import org.bson.BsonType;
 import org.bson.BsonWriter;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
@@ -17,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Builder
 @RequiredArgsConstructor
-public final class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, TDocValue> {
+public class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TField, TDocValue> {
     @NonNull
     private final Class<TField> fieldType;
     @NonNull
@@ -27,7 +30,7 @@ public final class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TF
     @NonNull
     private final Function2<BsonReader, DecoderContext, TDocValue> docValueReader;
     @NonNull
-    private final Function3<BsonWriter, TDocValue, EncoderContext, Void> docValueWriter;
+    private final Procedure3<BsonWriter, TDocValue, EncoderContext> docValueWriter;
 
     @Override
     public TField toField(TDocValue docValue) {
@@ -41,12 +44,21 @@ public final class DefaultFieldCodec<TField, TDocValue> implements FieldCodec<TF
 
     @Override
     public TField decode(BsonReader reader, DecoderContext decoderContext) {
-        return toFieldConverter.apply(docValueReader.apply(reader, decoderContext));
+        if (reader.getCurrentBsonType() == BsonType.NULL) {
+            reader.readNull();
+            return null;
+        } else {
+            return toFieldConverter.apply(docValueReader.apply(reader, decoderContext));
+        }
     }
 
     @Override
     public void encode(BsonWriter writer, TField value, EncoderContext encoderContext) {
-        docValueWriter.apply(writer, toDocValueConverter.apply(value), encoderContext);
+        if (value == null) {
+            writer.writeNull();
+        } else {
+            docValueWriter.apply(writer, toDocValueConverter.apply(value), encoderContext);
+        }
     }
 
     @Override

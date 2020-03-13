@@ -2,10 +2,11 @@
  * Author: Alexander Gatsenko (alexandr.gatsenko@gmail.com)
  * Created: 2020-03-12
  */
-package com.agatsenko.mongo.mapper;
+package com.agatsenko.mongo.mapper.model;
 
 import java.util.Map;
 
+import com.agatsenko.mongo.mapper.util.Check;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -17,13 +18,8 @@ public final class FieldValues<TEntity> {
         this.values = values;
     }
 
-    public <T> T get(String field) {
-        // FIXME: not yet implemented
-        throw new IllegalStateException("not yet implemented");
-    }
-
     public <TField> TField get(FieldMap<TEntity, TField, ?> fieldMap) {
-        // FIXME: not yet implemented
-        throw new IllegalStateException("not yet implemented");
+        final var valueObj = values.get(fieldMap);
+        return valueObj == null ? null : fieldMap.getFieldType().cast(valueObj);
     }
 }

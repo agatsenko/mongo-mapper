@@ -2,8 +2,9 @@
  * Author: Alexander Gatsenko (alexandr.gatsenko@gmail.com)
  * Created: 2020-03-12
  */
-package com.agatsenko.mongo.mapper;
+package com.agatsenko.mongo.mapper.impl;
 
+import com.agatsenko.mongo.mapper.model.EntityMap;
 import org.bson.BsonReader;
 import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
