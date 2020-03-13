@@ -1,4 +1,4 @@
-package com.agatsenko.mongo.mapper.model;
+package com.agatsenko.mongo.mapper.mapping;
 
 @FunctionalInterface
 public interface EntityCreator<TEntity> {

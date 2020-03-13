@@ -15,7 +15,7 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 
 import com.agatsenko.mongo.mapper.impl.EntityCodec;
-import com.agatsenko.mongo.mapper.model.EntityMap;
+import com.agatsenko.mongo.mapper.mapping.EntityMap;
 import com.agatsenko.mongo.mapper.util.Check;
 
 public final class EntityCodecProvider implements CodecProvider {

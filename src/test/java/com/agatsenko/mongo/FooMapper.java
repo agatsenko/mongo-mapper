@@ -6,9 +6,9 @@ package com.agatsenko.mongo;
 
 import org.bson.types.ObjectId;
 
-import com.agatsenko.mongo.mapper.model.EntityMap;
-import com.agatsenko.mongo.mapper.model.FieldMap;
-import com.agatsenko.mongo.mapper.model.FieldValueMap;
+import com.agatsenko.mongo.mapper.mapping.EntityMap;
+import com.agatsenko.mongo.mapper.mapping.FieldMap;
+import com.agatsenko.mongo.mapper.mapping.FieldValueMap;
 
 public class FooMapper {
     public static final FieldMap<Foo, ObjectId, ObjectId> idField = FieldValueMap.<Foo, ObjectId>directBuilder()

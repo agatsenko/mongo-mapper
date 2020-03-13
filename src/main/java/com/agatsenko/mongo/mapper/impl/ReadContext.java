@@ -1,6 +1,6 @@
 package com.agatsenko.mongo.mapper.impl;
 
-import com.agatsenko.mongo.mapper.model.EntityMap;
+import com.agatsenko.mongo.mapper.mapping.EntityMap;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

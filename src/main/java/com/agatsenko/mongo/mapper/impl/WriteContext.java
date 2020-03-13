@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import com.agatsenko.mongo.mapper.model.EntityMap;
+import com.agatsenko.mongo.mapper.mapping.EntityMap;
 
 @RequiredArgsConstructor
 @Getter

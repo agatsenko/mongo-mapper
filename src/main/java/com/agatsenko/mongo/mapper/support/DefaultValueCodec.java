@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import com.agatsenko.mongo.mapper.model.ValueCodec;
+import com.agatsenko.mongo.mapper.mapping.ValueCodec;
 import com.agatsenko.mongo.mapper.util.Procedure3;
 
 @Builder

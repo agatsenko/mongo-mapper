@@ -1,8 +1,8 @@
 package com.agatsenko.mongo.mapper.impl;
 
-import com.agatsenko.mongo.mapper.model.EntityFieldValues;
-import com.agatsenko.mongo.mapper.model.EntityMap;
-import com.agatsenko.mongo.mapper.model.FieldMap;
+import com.agatsenko.mongo.mapper.mapping.EntityFieldValues;
+import com.agatsenko.mongo.mapper.mapping.EntityMap;
+import com.agatsenko.mongo.mapper.mapping.FieldMap;
 import com.agatsenko.mongo.mapper.util.Check;
 
 import java.util.HashMap;

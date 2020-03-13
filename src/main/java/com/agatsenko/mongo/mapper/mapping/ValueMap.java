@@ -1,4 +1,4 @@
-package com.agatsenko.mongo.mapper.model;
+package com.agatsenko.mongo.mapper.mapping;
 
 import lombok.Getter;
 

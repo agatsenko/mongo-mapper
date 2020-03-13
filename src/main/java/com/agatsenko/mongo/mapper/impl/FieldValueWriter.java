@@ -8,7 +8,7 @@ import org.bson.BsonWriter;
 import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistry;
 
-import com.agatsenko.mongo.mapper.model.FieldMap;
+import com.agatsenko.mongo.mapper.mapping.FieldMap;
 import com.agatsenko.mongo.mapper.util.Check;
 
 public final class FieldValueWriter<TEntity, TField, TDocValue> implements FieldWriter<TEntity, TField, TDocValue> {

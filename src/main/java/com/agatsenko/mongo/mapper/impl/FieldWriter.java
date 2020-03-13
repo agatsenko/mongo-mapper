@@ -7,8 +7,8 @@ package com.agatsenko.mongo.mapper.impl;
 import org.bson.BsonWriter;
 import org.bson.codecs.configuration.CodecRegistry;
 
-import com.agatsenko.mongo.mapper.model.FieldMap;
-import com.agatsenko.mongo.mapper.model.FieldValueMap;
+import com.agatsenko.mongo.mapper.mapping.FieldMap;
+import com.agatsenko.mongo.mapper.mapping.FieldValueMap;
 
 
 public interface FieldWriter<TEntity, TField, TDocValue> {
