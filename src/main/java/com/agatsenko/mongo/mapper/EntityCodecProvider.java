@@ -31,8 +31,8 @@ public final class EntityCodecProvider implements CodecProvider {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Codec<T> get(Class<T> clazz, CodecRegistry registry) {
-        return (Codec<T>) new EntityCodec<>(entityMaps.get(clazz), registry);
+    public <T> Codec<T> get(Class<T> clazz, CodecRegistry codecRegistry) {
+        return (Codec<T>) new EntityCodec<>(entityMaps.get(clazz), codecRegistry);
     }
 
     public static final class Builder {

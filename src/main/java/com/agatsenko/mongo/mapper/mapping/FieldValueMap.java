@@ -17,4 +17,10 @@ public final class FieldValueMap<TEntity, TField, TDocValue> extends FieldMap<TE
     public static <TEntity, TField> FieldValueMapBuilder<TEntity, TField, TField> directBuilder() {
         return builder();
     }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    protected Object notNullFilterVal(Object field) {
+        return getCodec() == null ? field : ((ValueCodec) getCodec()).toDocValue(field);
+    }
 }

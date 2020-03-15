@@ -14,11 +14,11 @@ import org.bson.codecs.configuration.CodecRegistry;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class EntityCodec<TEntity> implements Codec<TEntity> {
     private final EntityMap<TEntity> entityMap;
-    private final CodecRegistry codecRegistry;
     private final Map<String, FieldReader<TEntity, ?, ?>> docKeyToFieldReaderMap;
     private final Collection<FieldWriter<TEntity, ?, ?>> fieldWriters;
 
@@ -27,19 +27,22 @@ public final class EntityCodec<TEntity> implements Codec<TEntity> {
         Check.argNotNull(codecRegistry, "codecRegistry");
 
         this.entityMap = entityMap;
-        this.codecRegistry = codecRegistry;
-        this.docKeyToFieldReaderMap = buildDocKeyToFieldReaderMap(entityMap);
+        this.docKeyToFieldReaderMap = buildDocKeyToFieldReaderMap(entityMap, codecRegistry);
         this.fieldWriters = buildFieldWriters(entityMap, codecRegistry);
     }
 
     @Override
     public TEntity decode(BsonReader reader, DecoderContext decoderContext) {
         final var fieldValues = new DefaultEntityFieldValues<>(entityMap);
+        final var readContext = new ReadContext<>(entityMap, decoderContext);
+        String discriminator = null;
         reader.readStartDocument();
-        final var readContext = new ReadContext<>(entityMap, codecRegistry, decoderContext);
         while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
             final var docKey = reader.readName();
-            if (!readDiscriminator(reader, docKey, readContext)) {
+            if (isDiscriminator(docKey)) {
+                discriminator = reader.readString();
+            }
+            else {
                 final var fieldReader = docKeyToFieldReaderMap.get(docKey);
                 if (fieldReader != null) {
                     fieldValues.putValue(fieldReader.getFieldMap(), fieldReader.read(reader, readContext));
@@ -49,7 +52,7 @@ public final class EntityCodec<TEntity> implements Codec<TEntity> {
             }
         }
         reader.readEndDocument();
-        return entityMap.getEntityCreator().create(fieldValues, readContext.getDiscriminator());
+        return entityMap.getEntityCreator().create(fieldValues, discriminator);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,10 +70,12 @@ public final class EntityCodec<TEntity> implements Codec<TEntity> {
         return entityMap.getType();
     }
 
-    private static <T> Map<String, FieldReader<T, ?, ?>> buildDocKeyToFieldReaderMap(EntityMap<T> entityMap) {
+    private static <T> Map<String, FieldReader<T, ?, ?>> buildDocKeyToFieldReaderMap(
+            EntityMap<T> entityMap,
+            CodecRegistry codecRegistry) {
         return entityMap.getFields().stream().collect(Collectors.toUnmodifiableMap(
                 FieldMap::getDocKey,
-                FieldReader::create
+                f -> FieldReader.create(f, codecRegistry)
         ));
     }
 
@@ -82,12 +87,8 @@ public final class EntityCodec<TEntity> implements Codec<TEntity> {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private boolean readDiscriminator(BsonReader reader, String docKey, ReadContext<TEntity> context) {
-        if (!entityMap.isDiscriminatorEnabled() || !entityMap.getDiscriminatorKey().equals(docKey)) {
-            return false;
-        }
-        context.setDiscriminator(reader.readString());
-        return true;
+    private boolean isDiscriminator(String docKey) {
+        return entityMap.isDiscriminatorEnabled() && entityMap.getDiscriminatorKey().equals(docKey);
     }
 
     private <TField> void writeField(

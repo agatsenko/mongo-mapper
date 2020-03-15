@@ -14,10 +14,5 @@ public final class ReadContext<TEntity> {
     @NonNull
     private final EntityMap<TEntity> entityMap;
     @NonNull
-    private final CodecRegistry codecRegistry;
-    @NonNull
     private final DecoderContext decoderContext;
-
-    @Setter
-    private volatile String discriminator;
 }

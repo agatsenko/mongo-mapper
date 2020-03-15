@@ -10,6 +10,7 @@ import java.util.Set;
 @EqualsAndHashCode(of = "type")
 @ToString
 public final class EntityMap<TEntity> {
+    public static final String ID_DOC_KEY = "_id";
     public static final String DEFAULT_DISCRIMINATOR_KEY = "_class";
 
     private final Class<TEntity> type;

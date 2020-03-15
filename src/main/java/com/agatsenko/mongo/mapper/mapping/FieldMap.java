@@ -38,4 +38,13 @@ public abstract class FieldMap<TEntity, TField, TDocValue> {
     public ValueCodec<TField, TDocValue> getCodec() {
         return this.codec;
     }
+
+    public final Object filterVal(Object field) {
+        if (field == null) {
+            return null;
+        }
+        return notNullFilterVal(field);
+    }
+
+    protected abstract Object notNullFilterVal(Object field);
 }
